@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsl.wechat.mapper.XslTaskMapper">
+    <select id="getTaskList" parameterType="map" resultType="com.xsl.wechat.pojo.XslTask">
+        SELECT id,cid,taskId,taskTitle,descr,address,address_noun,sendId,money,state,number,createDate,updateDate
+        from xsl_task where id>=1 ORDER BY id LIMIT #{pageNum},#{pageSize}
+    </select>
+    <select id="getXslTaskTotalCount" resultType="java.lang.Integer">
+        select count(*) from xsl_task
+    </select>
+    <select id="getCategoryNameByCid" parameterType="java.lang.Integer" resultType="java.lang.String">
+        SELECT name from xsl_task_category where id = #{cid}
+    </select>
+    <select id="getUerNameBySendId" resultType="java.lang.String">
+        SELECT name from xsl_master LEFT JOIN xsl_user on xsl_master.userId = xsl_user.id
+        where userId=#{sendId};
+    </select>
+    <select id="getImageBySendId" resultType="java.lang.String">
+        SELECT url from xsl_master LEFT JOIN xsl_file on xsl_master.userId = xsl_file.userId
+        where xsl_master.userId=#{sendId}
+    </select>
+
+    <insert id="insertTask" parameterType="com.xsl.wechat.vo.XslTaskVo">
+
+    </insert>
+</mapper>
