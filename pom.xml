@@ -55,7 +55,7 @@
 
         <commons-net.version>3.3</commons-net.version>
 
-        <pagehelper.version>3.4.2-fix</pagehelper.version>
+        <pagehelper.version>3.4.2</pagehelper.version>
 
         <jsqlparser.version>0.9.1</jsqlparser.version>
 
@@ -146,7 +146,13 @@
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <scope>test</scope>
+                <scope>yr</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>4.1.3.RELEASE</version>
             </dependency>
 
             <!-- 日志处理 -->

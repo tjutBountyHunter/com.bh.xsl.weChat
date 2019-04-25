@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" build-on-make="true" name="xsl">
+    <output-path>$PROJECT_DIR$/out/artifacts/xsl</output-path>
+    <root id="root">
+      <element id="module-output" name="xsl-weChat-dao" />
+      <element id="module-output" name="xsl-weChat-service" />
+      <element id="module-output" name="xsl-weChat-common" />
+      <element id="module-output" name="xsl-weChat-web" />
+      <element id="module-output" name="xsl-weChat-pojo" />
+    </root>
+  </artifact>
+</component>

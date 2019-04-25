@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 
+ *
  * @ClassName:XslResult
  * @descrription:悬赏令自定义响应结构
  * @version V1.0
