@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsl.wechat.mapper.XslTaskAreaMapper">
+
+    <select id="getTaskMsgByTaskId" resultType="com.xsl.wechat.pojo.XslTaskArea">
+        SELECT address,addressNoun from xsl_task_area where taskId = #{taskId}
+    </select>
+
+    <insert id="insertTaskArea">
+        insert into xsl_task_area values
+        (default ,#{taskId},#{address},#{addressNoun},#{createDate},#{updateDate})
+    </insert>
+</mapper>
