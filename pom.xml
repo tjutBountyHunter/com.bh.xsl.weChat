@@ -11,7 +11,6 @@
     <modules>
         <module>xsl-weChat-common</module>
         <module>xsl-weChat-domain</module>
-        <module>xsl-weChat-pojo</module>
         <module>xsl-weChat-dao</module>
         <module>xsl-weChat-rpc</module>
         <module>xsl-weChat-export</module>
