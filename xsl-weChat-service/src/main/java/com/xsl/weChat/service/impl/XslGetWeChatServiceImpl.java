@@ -10,6 +10,7 @@ import com.xsl.wechat.mapper.XslMasterMapper;
 import com.xsl.wechat.mapper.XslUserMapper;
 import com.xsl.wechat.pojo.*;
 import com.xsl.wechat.vo.WeChatAccountConfig;
+import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * 此功能先不开发
+ * 获取微信openid
  * @author 梁俊伟
  * @version 1.0
  * @date 2019/4/20 17:10
@@ -50,7 +51,7 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
             String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?" +
                     "appid=wxb7715d658f00b0e1&secret=d95be64495bf3a94114bae2841a54961&js_code=" + code +"&"+
                     "grant_type=authorization_code";
-            net.sf.json.JSONObject jsonObject = CommonUtil.httpsRequest(WX_URL, "GET", null);
+            JSONObject jsonObject = CommonUtil.httpsRequest(WX_URL, "GET", null);
             if(jsonObject!=null){
                 String userId = (String) jsonObject.get("openid");
                 WeChatAccountConfig weChatAccountConfig = new WeChatAccountConfig();
@@ -103,7 +104,6 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
             e.printStackTrace();
             throw new RuntimeException("服务器异常");
         }
-
         return xslMaster;
     }
 
