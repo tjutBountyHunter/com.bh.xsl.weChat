@@ -1,7 +1,5 @@
 package com.xsl.wechat.vo;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 /**
  * @author 梁俊伟
  * @version 1.0
@@ -36,7 +34,6 @@ public class XslTaskVo {
     private String avatarUrl;
 
     /**悬赏区域*/
-    @JsonProperty("address_noun")
     private String addressNoun;
 
     public String getUserId() {
