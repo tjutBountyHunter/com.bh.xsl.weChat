@@ -10,7 +10,6 @@ import com.xsl.wechat.mapper.XslMasterMapper;
 import com.xsl.wechat.mapper.XslUserMapper;
 import com.xsl.wechat.pojo.*;
 import com.xsl.wechat.vo.WeChatAccountConfig;
-import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +50,7 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
             String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?" +
                     "appid=wxb7715d658f00b0e1&secret=d95be64495bf3a94114bae2841a54961&js_code=" + code +"&"+
                     "grant_type=authorization_code";
-            JSONObject jsonObject = CommonUtil.httpsRequest(WX_URL, "GET", null);
+            net.sf.json.JSONObject jsonObject = CommonUtil.httpsRequest(WX_URL, "GET", null);
             if(jsonObject!=null){
                 String userId = (String) jsonObject.get("openid");
                 WeChatAccountConfig weChatAccountConfig = new WeChatAccountConfig();

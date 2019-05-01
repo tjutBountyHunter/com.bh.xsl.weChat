@@ -15,7 +15,7 @@
 
         <dependency>
             <groupId>com.bh.xsl.weChat</groupId>
-            <artifactId>xsl-weChat-pojo</artifactId>
+            <artifactId>xsl-weChat-domain</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
