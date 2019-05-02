@@ -47,6 +47,9 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
 
     @Transactional(rollbackFor = RuntimeException.class)
     public XslResult getOpenIdAndSessionKey(String code, String nickName, String avatarUrl) {
+        if(StringUtils.isEmpty(code)){
+            return XslResult.build(403,"code不能为空");
+        }
         try {
 
             String WX_URL = "https://api.weixin.qq.com/sns/jscode2session?" +

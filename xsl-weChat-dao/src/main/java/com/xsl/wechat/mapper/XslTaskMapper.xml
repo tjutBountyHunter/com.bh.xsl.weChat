@@ -56,4 +56,9 @@
     <update id="increaseTaskNum" parameterType="java.lang.String">
         UPDATE xsl_task_category SET taskNum = taskNum+1 WHERE name=#{name};
     </update>
+
+    <update id="alterTaskState" parameterType="java.util.Map">
+            update xsl_task set state =#{taskState} where taskId=#{taskId}
+    </update>
+
 </mapper>

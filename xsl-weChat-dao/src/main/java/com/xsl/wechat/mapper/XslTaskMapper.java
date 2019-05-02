@@ -117,4 +117,9 @@ public interface XslTaskMapper {
      */
     XslTask getTaskByTasKId(String taskId);
 
+    /**
+     * 接受任务
+     * @param map
+     */
+    void alterTaskState(Map map);
 }
