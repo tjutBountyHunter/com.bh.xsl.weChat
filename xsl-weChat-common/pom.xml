@@ -38,14 +38,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
 
-        <!-- 单元测试 -->
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-            <version>4.12</version>
-        </dependency>
-
         <!-- 日志处理 -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -62,11 +54,23 @@
             <scope>provided</scope>
         </dependency>
 
+        <!-- Redis客户端 -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>net.sf.json-lib</groupId>
             <artifactId>json-lib</artifactId>
             <version>2.3</version>
             <classifier>jdk15</classifier>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-lang</artifactId>
+                    <groupId>commons-lang</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 

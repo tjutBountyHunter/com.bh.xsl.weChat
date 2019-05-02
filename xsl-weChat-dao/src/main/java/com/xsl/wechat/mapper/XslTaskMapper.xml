@@ -30,13 +30,27 @@
         SELECT userId from xsl_user WHERE masterId=#{userId}
     </select>
     <select id="getMasterIdByOpenId" resultType="java.lang.String">
-        select masterId from xsl_user where userId=#{sendId}
+        select masterId from xsl_user where userId=#{userId}
     </select>
-
+    <select id="getHunterIdByOpenId" resultType="java.lang.String">
+        select hunterId from xsl_user where  userId=#{userId}
+    </select>
+    <select id="getMyAcceptTask" resultType="com.xsl.wechat.pojo.XslHunterTask">
+        select taskId,createDate,taskState from xsl_hunter_task where hunterId = #{hunterId}
+    </select>
+    <select id="getAcceptXslTask" resultType="com.xsl.wechat.pojo.XslTask" parameterType="java.util.List">
+        select cid,taskTitle,money from xsl_task where taskId in
+        <foreach collection="list" item="xslHunterTask" index="index" open="(" separator="," close=")">
+          #{xslHunterTask.taskId}
+        </foreach>
+    </select>
+    <select id="getTaskByTasKId" resultType="com.xsl.wechat.pojo.XslTask">
+        select cid,taskId,taskTitle,content,money,sendId,state,createDate from xsl_task where taskId=#{taskId}
+    </select>
     <insert id="insertTask" parameterType="com.xsl.wechat.pojo.XslTask">
         INSERT INTO xsl_task (
 	        cid,taskId,taskTitle,content,sendId,money,state,createDate,updateDate)
-        VALUES(#{cid},#{taskTitle},#{taskId},#{content},#{sendId},#{money},#{state},#{createDate},#{updateDate})
+        VALUES(#{cid},#{taskId},#{taskTitle},#{content},#{sendId},#{money},#{state},#{createDate},#{updateDate})
     </insert>
 
     <update id="increaseTaskNum" parameterType="java.lang.String">

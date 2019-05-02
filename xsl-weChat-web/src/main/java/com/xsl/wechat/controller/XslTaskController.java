@@ -67,4 +67,28 @@ public class XslTaskController {
         XslResult xslResult = xslTaskService.getMyIssueTask(sendId);
         return xslResult;
     }
+
+    /**
+     * 获取自己接受的任务
+     * @param userId
+     * @return
+     */
+    @RequestMapping("/myAcceptTask")
+    @ResponseBody
+    public XslResult getMyAcceptTask(String userId){
+        XslResult xslResult = xslTaskService.getMyAcceptTask(userId);
+        return xslResult;
+    }
+
+    /**
+     * 获取任务详情
+     * @param taskId
+     * @return
+     */
+    @RequestMapping("/getTaskDetail")
+    @ResponseBody
+    public XslResult getXslTaskDetail(@RequestParam(value = "id") String taskId){
+        XslResult xslResult = xslTaskService.getTaskDetail(taskId);
+        return xslResult;
+    }
 }

@@ -12,7 +12,7 @@ import org.junit.Test;
 public class getOpenIdTest {
 
 
-    private static String code = "023Fb9a32KyJ9W0EPS632PES932Fb9aB";
+    private static String code = "0332cwsA1DNnUb0VJorA1ZuBsA12cwsj";
 
     @Test
     public void getWXOpenId(){

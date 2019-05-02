@@ -16,6 +16,12 @@
             <groupId>com.bh.xsl.weChat</groupId>
             <artifactId>xsl-weChat-dao</artifactId>
             <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-logging</artifactId>
+                    <groupId>commons-logging</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -52,22 +58,6 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.github.pagehelper</groupId>-->
-            <!--<artifactId>pagehelper</artifactId>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<artifactId>junit</artifactId>-->
-                    <!--<groupId>junit</groupId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-        <!--</dependency>-->
-
-        <!-- Redis客户端 -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
         </dependency>
 
         <!-- dubbo相关 -->

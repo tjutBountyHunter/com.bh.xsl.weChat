@@ -31,4 +31,18 @@ public interface XslTaskService {
      * @return
      */
     XslResult getMyIssueTask(String sendId);
+
+    /**
+     * 得到我接受过的任务
+     * @param userId
+     * @return
+     */
+    XslResult getMyAcceptTask(String userId);
+
+    /**
+     * 获取任务详情
+     * @param taskId
+     * @return
+     */
+    XslResult getTaskDetail(String taskId);
 }

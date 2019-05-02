@@ -60,4 +60,11 @@ public class XslTaskServiceImplTest {
 //        List<XslTaskVo> xslTaskVoList = (List<XslTaskVo>) xslResult.getData();
 //        Assert.assertNotEquals(0,xslTaskVoList.size());
     }
+
+    @Test
+    public void getTaskDetail(){
+        XslResult xslResult = xslTaskService.getTaskDetail("123");
+        System.out.println(xslResult.getMsg());
+        Assert.assertEquals(1,new Long(xslResult.getStatus()).longValue());
+    }
 }

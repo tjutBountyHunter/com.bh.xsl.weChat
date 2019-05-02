@@ -1,56 +1,33 @@
-package com.xsl.wechat.vo;
+package com.xsl.wechat.dto;
 
 /**
  * @author 梁俊伟
  * @version 1.0
- * @date 2019/4/19 13:03
+ * @date 2019/5/2 13:46
  */
-public class XslTaskVo {
+public class XslTaskDetailDTO {
 
-    /**发送者id*/
-    private String userId;
-
-    /**任务id*/
-    private String taskId;
-
-    /**任务标题*/
     private String title;
 
-    /**任务类型，任务类别名称*/
     private String type;
 
-    /**悬赏金额*/
     private String money;
 
-    /**发布任务时间*/
+    private String issueImg;
+
     private String issueTime;
 
-    /**悬赏地址*/
     private String address;
 
-    /**悬赏人姓名*/
+    private String addressNoun;
+
+    private Byte missionState;
+
+    private String missionDetail;
+
     private String nickName;
 
     private String avatarUrl;
-
-    /**悬赏区域*/
-    private String addressNoun;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getTaskId() {
-        return taskId;
-    }
-
-    public void setTaskId(String taskId) {
-        this.taskId = taskId;
-    }
 
     public String getTitle() {
         return title;
@@ -76,6 +53,14 @@ public class XslTaskVo {
         this.money = money;
     }
 
+    public String getIssueImg() {
+        return issueImg;
+    }
+
+    public void setIssueImg(String issueImg) {
+        this.issueImg = issueImg;
+    }
+
     public String getIssueTime() {
         return issueTime;
     }
@@ -92,6 +77,30 @@ public class XslTaskVo {
         this.address = address;
     }
 
+    public String getAddressNoun() {
+        return addressNoun;
+    }
+
+    public void setAddressNoun(String addressNoun) {
+        this.addressNoun = addressNoun;
+    }
+
+    public Byte getMissionState() {
+        return missionState;
+    }
+
+    public void setMissionState(Byte missionState) {
+        this.missionState = missionState;
+    }
+
+    public String getMissionDetail() {
+        return missionDetail;
+    }
+
+    public void setMissionDetail(String missionDetail) {
+        this.missionDetail = missionDetail;
+    }
+
     public String getNickName() {
         return nickName;
     }
@@ -106,13 +115,5 @@ public class XslTaskVo {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
-    }
-
-    public String getAddressNoun() {
-        return addressNoun;
-    }
-
-    public void setAddressNoun(String addressNoun) {
-        this.addressNoun = addressNoun;
     }
 }

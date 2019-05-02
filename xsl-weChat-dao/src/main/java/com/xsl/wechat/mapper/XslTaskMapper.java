@@ -1,5 +1,6 @@
 package com.xsl.wechat.mapper;
 
+import com.xsl.wechat.pojo.XslHunterTask;
 import com.xsl.wechat.pojo.XslTask;
 
 import java.util.List;
@@ -83,9 +84,37 @@ public interface XslTaskMapper {
 
     /**
      * 通过userId来查询雇主Id
-     * @param sendId
+     * @param userId
      * @return
      */
-    String getMasterIdByOpenId(String sendId);
+    String getMasterIdByOpenId(String userId);
+
+    /**
+     * 通过openid来获取猎人id
+     * @param userId
+     * @return
+     */
+    String getHunterIdByOpenId(String userId);
+
+    /**
+     * 通过hunterId来获取我接受过的任务
+     * @param hunterId
+     * @return
+     */
+    List<XslHunterTask> getMyAcceptTask(String hunterId);
+
+    /**
+     * 通过任务id来查询任务列表
+     * @param xslHunterTasks
+     * @return
+     */
+    List<XslTask> getAcceptXslTask(List<XslHunterTask> xslHunterTasks);
+
+    /**
+     * 通过任务id查询任务
+     * @param taskId
+     * @return
+     */
+    XslTask getTaskByTasKId(String taskId);
 
 }
