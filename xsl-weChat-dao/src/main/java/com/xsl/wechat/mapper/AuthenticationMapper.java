@@ -10,7 +10,7 @@ import com.xsl.wechat.vo.AuthenticationReqVo;
 public interface AuthenticationMapper {
 
     /**
-     * 插入用户信息
+     * 更新用户信息
      * @param authenticationReqVo
      * @return
      */

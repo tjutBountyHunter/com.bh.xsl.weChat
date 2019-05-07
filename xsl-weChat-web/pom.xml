@@ -58,7 +58,7 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>xsl-weChat-web</finalName>
+        <finalName>xslwechat</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

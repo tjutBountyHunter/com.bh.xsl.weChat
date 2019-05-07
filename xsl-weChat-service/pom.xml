@@ -11,6 +11,15 @@
 
     <artifactId>xsl-weChat-service</artifactId>
 
+    <!--引入远程仓库中jar包依赖-->
+    <repositories>
+        <repository>
+            <id>xsl_repos</id>
+            <name>xsl_interface_repository</name>
+            <url>http://211.159.184.66:8081/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>com.bh.xsl.weChat</groupId>
@@ -30,6 +39,11 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.bh.xsl.user</groupId>
+            <artifactId>xsl_user_service</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
         <!-- Spring -->
         <dependency>
             <groupId>org.springframework</groupId>

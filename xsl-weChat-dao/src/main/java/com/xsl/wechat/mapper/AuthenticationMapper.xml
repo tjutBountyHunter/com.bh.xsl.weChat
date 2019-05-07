@@ -5,6 +5,6 @@
 
 
     <update id="AuthenticationUser" parameterType="com.xsl.wechat.vo.AuthenticationReqVo">
-        UPDATE xsl_user set name=#{name},phone=#{phoneNumber} WHERE userId=#{userId}
+        UPDATE xsl_user set name=#{name},phone=#{phoneNumber},state=1 WHERE userId=#{userId}
     </update>
 </mapper>

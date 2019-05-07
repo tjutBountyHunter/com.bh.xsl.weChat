@@ -104,13 +104,6 @@ public interface XslTaskMapper {
     List<XslHunterTask> getMyAcceptTask(String hunterId);
 
     /**
-     * 通过任务id来查询任务列表
-     * @param xslHunterTasks
-     * @return
-     */
-    List<XslTask> getAcceptXslTask(List<XslHunterTask> xslHunterTasks);
-
-    /**
      * 通过任务id查询任务
      * @param taskId
      * @return

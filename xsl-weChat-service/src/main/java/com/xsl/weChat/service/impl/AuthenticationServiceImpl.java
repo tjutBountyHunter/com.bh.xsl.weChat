@@ -1,5 +1,6 @@
 package com.xsl.weChat.service.impl;
 
+import com.xsl.weChat.common.enums.UserStateEnum;
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.service.AuthenticationService;
 import com.xsl.wechat.mapper.AuthenticationMapper;
@@ -38,10 +39,13 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             XslUserExample example = new XslUserExample();
             XslUserExample.Criteria criteria = example.createCriteria();
-            criteria.andPhoneEqualTo(authenticationReqVo.getPhoneNumber());
+            criteria.andUseridEqualTo(authenticationReqVo.getUserId());
             List<XslUser> list = xslUserMapper.selectByExample(example);
-            if(list!=null&&list.size()>0){
-                return XslResult.build(403,"您已认证");
+            if(list==null||list.size()==0){
+                return XslResult.build(-1,"没有该用户");
+            }
+            if(!list.get(0).getState().equals(UserStateEnum.CHECK_PENDING.getCode())){
+                return XslResult.build(-1,"您以认证");
             }
             authenticationMapper.AuthenticationUser(authenticationReqVo);
             return XslResult.build(1,"认证成功");
@@ -49,7 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }catch (Exception e){
             LOGGER.error("服务器异常警告:"+e.getMessage());
             e.printStackTrace();
-            return XslResult.build(-1,"服务器异常");
+            return XslResult.build(500,"服务器异常");
         }
 
     }

@@ -62,7 +62,7 @@ public class XslTaskServiceImpl implements XslTaskService {
         // 当前页码
         if (xslTaskList == null && xslTaskList.size() == 0) {
             logger.info("pageNum is {}", pageNum + "and pageSize is {}" + pageSize);
-            return XslResult.build(-1, "服务器异常");
+            return XslResult.build(-1, "无任务数据");
         }
         try {
             List<XslTaskVo> xslTaskVoList = new ArrayList<XslTaskVo>(10);
@@ -93,8 +93,8 @@ public class XslTaskServiceImpl implements XslTaskService {
             String taskId = UUIdTaskIdUtil.getUUID();
             initTaskArea(xslTaskReqVo, taskId);
             writeTask(xslTaskReqVo, taskId);
-            initXslFile(taskId,xslTaskReqVo);
-            return XslResult.build(1, "正常", xslTaskReqVo.getUserId());
+//            initXslFile(taskId,xslTaskReqVo);
+            return XslResult.build(1, "正常",taskId);
         } catch (Exception e) {
             logger.error(e.getMessage());
             e.printStackTrace();
@@ -146,8 +146,7 @@ public class XslTaskServiceImpl implements XslTaskService {
     public XslResult getMyAcceptTask(String userId) {
 
         List<XslHunterTask> xslHunterTasks = xslTaskMapper.getMyAcceptTask(xslTaskMapper.getHunterIdByOpenId(userId));
-        List<XslTask> xslTasks = xslTaskMapper.getAcceptXslTask(xslHunterTasks);
-        if(xslTasks == null&&xslTasks.size()<1){
+        if(xslHunterTasks == null||xslHunterTasks.size()==0){
             return XslResult.build(403,"您还没有接受任何任务");
         }
         try {
@@ -155,6 +154,7 @@ public class XslTaskServiceImpl implements XslTaskService {
             for(XslHunterTask xslHunterTask:xslHunterTasks){
                 XslTask xslTask = xslTaskMapper.getTaskByTasKId(xslHunterTask.getTaskId());
                 XslTaskDTO xslTaskDTO = supplementXskTaskDTO(xslTask);
+                xslTaskDTO.setMissionState(xslHunterTask.getTaskState());
                 xslTaskDTOList.add(xslTaskDTO);
             }
             if(xslHunterTasks.size()>0){
@@ -213,6 +213,7 @@ public class XslTaskServiceImpl implements XslTaskService {
         xslTaskVo.setUserId(xslTaskMapper.getMasterByOpenId(xslTask.getSendId()));
         xslTaskVo.setTitle(xslTask.getTaskTitle());
         BeanUtils.copyProperties(xslTaskArea, xslTaskVo);
+        xslTaskVo.setTaskId(xslTask.getTaskId());
         return xslTaskVo;
     }
 

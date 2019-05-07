@@ -1,9 +1,6 @@
 package com.xsl.wechat.mapper;
 
-import com.xsl.wechat.pojo.XslHunterTask;
 import com.xsl.wechat.pojo.XslTaskArea;
-
-import java.util.List;
 
 /**
  * @author 梁俊伟
@@ -26,12 +23,5 @@ public interface XslTaskAreaMapper {
      */
     int insertTaskArea(XslTaskArea xslTaskArea);
 
-
-    /**
-     * 通过任务Id来查询任务地区列表
-     * @param xslHunterTasks
-     * @return
-     */
-    List<XslTaskArea> getAcceptXslTaskArea(List<XslHunterTask> xslHunterTasks);
 
 }

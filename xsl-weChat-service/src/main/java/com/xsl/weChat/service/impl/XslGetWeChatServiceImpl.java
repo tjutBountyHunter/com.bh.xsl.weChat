@@ -66,8 +66,10 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
                 criteria.andUseridEqualTo(userId);
                 List<XslUser> list = xslUserMapper.selectByExample(example);
                 if(list!=null&&list.size()>0){
+                    weChatAccountConfig.setState(list.get(0).getState());
                     return XslResult.build(1,"正常",weChatAccountConfig);
                 }
+                weChatAccountConfig.setState(list.get(0).getState());
                 XslUser xslUser = new XslUser();
                 xslUser.setUserid(userId);
                 xslUser.setName(nickName);

@@ -6,12 +6,6 @@
     <select id="getTaskMsgByTaskId" resultType="com.xsl.wechat.pojo.XslTaskArea">
         SELECT address,addressNoun from xsl_task_area where taskId = #{taskId}
     </select>
-    <select id="getAcceptXslTaskArea" resultType="com.xsl.wechat.pojo.XslTaskArea">
-        SELECT address,addressNoun from xsl_task_area where task in
-        <foreach collection="list" item="xslHunterTask" index="index" open="(" separator="," close=")">
-            #{xslHunterTasks.taskId}
-        </foreach>
-    </select>
     <insert id="insertTaskArea">
         insert into xsl_task_area values
         (default ,#{taskId},#{address},#{addressNoun},#{createDate},#{updateDate})

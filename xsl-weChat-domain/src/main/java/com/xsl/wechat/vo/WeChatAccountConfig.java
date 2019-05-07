@@ -13,6 +13,8 @@ public class WeChatAccountConfig {
     /**开放平台session_key*/
     private String sessionKey;
 
+    private Byte state;
+
     public String getOpenId() {
         return openId;
     }
@@ -29,4 +31,11 @@ public class WeChatAccountConfig {
         this.sessionKey = sessionKey;
     }
 
+    public Byte getState() {
+        return state;
+    }
+
+    public void setState(Byte state) {
+        this.state = state;
+    }
 }

@@ -29,7 +29,7 @@ public class XslAcceptTaskServiceImpl implements XslAcceptTaskService {
     public XslResult AcceptTask(String userId, String taskId) {
 
         Map<String, String> map = new HashMap<String, String>();
-        map.put("hunterId", userId);
+        map.put("hunterId", TaskDao.getHunterIdByOpenId(userId));
         map.put("taskId", taskId);
         map.put("taskState", taskState);
         try {

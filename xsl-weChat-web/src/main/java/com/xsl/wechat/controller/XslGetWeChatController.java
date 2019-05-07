@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Controller
 @RestController
-@RequestMapping("/xslWeChat")
 public class XslGetWeChatController {
 
     @Autowired
     private XslGetWeChatService xslGetWeChatService;
 
-    @RequestMapping("/getMsg")
+    @RequestMapping("/getOpenid")
     public XslResult getOpenIdAndSessionKey(String code, String nickName, String avatarUrl){
         XslResult xslResult = xslGetWeChatService.getOpenIdAndSessionKey(code,nickName,avatarUrl);
         return xslResult;

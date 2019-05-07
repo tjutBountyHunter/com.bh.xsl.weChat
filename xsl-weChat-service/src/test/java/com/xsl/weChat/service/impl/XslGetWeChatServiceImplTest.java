@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author 梁俊伟
@@ -22,7 +21,6 @@ public class XslGetWeChatServiceImplTest {
     private XslGetWeChatService xslGetWeChatService;
 
     @Test
-    @Transactional
     public void getOpenIdAndSessionKey(){
         String code = "033JdqfK0Vl4g82TbTeK0VX7fK0Jdqfl";
         XslResult xslResult = xslGetWeChatService.getOpenIdAndSessionKey(code,

@@ -103,7 +103,7 @@ public class XslTaskReqVo {
         return sourceType;
     }
 
-    public void setSourceType(String soucreType) {
-        this.sourceType = soucreType;
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
     }
 }
