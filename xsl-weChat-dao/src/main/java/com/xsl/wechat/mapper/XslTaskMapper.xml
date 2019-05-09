@@ -36,7 +36,7 @@
         select hunterId from xsl_user where userId=#{userId}
     </select>
     <select id="getMyAcceptTask" resultType="com.xsl.wechat.pojo.XslHunterTask">
-        select taskId,createDate,taskState from xsl_hunter_task where hunterId = #{hunterId}
+        select taskId,createDate,taskState from xsl_hunter_task where hunterId = #{hunterId} and taskState !=0
     </select>
     <select id="getTaskByTasKId" resultType="com.xsl.wechat.pojo.XslTask">
         select cid,taskId,taskTitle,content,money,sendId,state,createDate from xsl_task where taskId=#{taskId}

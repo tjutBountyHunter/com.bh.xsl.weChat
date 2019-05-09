@@ -12,4 +12,6 @@ public interface AuthenticationService {
 
     XslResult AuthenticationUser(AuthenticationReqVo authenticationReqVo);
 
+//    XslResult getSchoolInfo();
+
 }
