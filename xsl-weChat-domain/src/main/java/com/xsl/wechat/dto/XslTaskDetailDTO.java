@@ -29,6 +29,12 @@ public class XslTaskDetailDTO {
 
     private String avatarUrl;
 
+    private String acceptUserName;
+
+    private String acceptUserAvatarUrl;
+
+    private String phoneNum;
+
     public String getTitle() {
         return title;
     }
@@ -115,5 +121,29 @@ public class XslTaskDetailDTO {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public String getAcceptUserName() {
+        return acceptUserName;
+    }
+
+    public void setAcceptUserName(String acceptUserName) {
+        this.acceptUserName = acceptUserName;
+    }
+
+    public String getAcceptUserAvatarUrl() {
+        return acceptUserAvatarUrl;
+    }
+
+    public void setAcceptUserAvatarUrl(String acceptUserAvatarUrl) {
+        this.acceptUserAvatarUrl = acceptUserAvatarUrl;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public void setPhoneNum(String phoneNum) {
+        this.phoneNum = phoneNum;
     }
 }

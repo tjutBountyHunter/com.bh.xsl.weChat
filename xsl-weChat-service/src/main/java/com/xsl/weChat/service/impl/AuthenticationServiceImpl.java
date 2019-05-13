@@ -44,6 +44,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             if(list==null||list.size()==0){
                 return XslResult.build(-1,"没有该用户");
             }
+            LOGGER.info("code:"+UserStateEnum.CHECK_PENDING.getCode());
+            LOGGER.info("state:" + list.get(0).getState().equals(UserStateEnum.CHECK_PENDING.getCode()));
             if(!list.get(0).getState().equals(UserStateEnum.CHECK_PENDING.getCode())){
                 return XslResult.build(-1,"您以认证");
             }

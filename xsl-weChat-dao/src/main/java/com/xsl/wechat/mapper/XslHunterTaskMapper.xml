@@ -5,5 +5,7 @@
     <insert id="updateHunterTask" parameterType="map">
           insert into xsl_hunter_task (hunterId,taskId,taskState) values (#{hunterId},#{taskId},#{taskState})
     </insert>
-
+    <select id="getSendIdByTaskId" resultType="java.lang.String">
+        select hunterId from xsl_hunter_task where taskId = #{taskId} and taskState = 2
+    </select>
 </mapper>

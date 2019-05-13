@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xsl.wechat.mapper.XslTagMapper">
+
+    <resultMap id="BaseResultMap" type="com.xsl.wechat.vo.TagVo">
+        <result column="tagId" property="tagId" jdbcType="VARCHAR"/>
+        <result column="tagName" property="name" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getTagList" resultType="com.xsl.wechat.vo.TagVo">
+        SELECT
+            tagId,name
+        from xsl_tag
+    </select>
+</mapper>

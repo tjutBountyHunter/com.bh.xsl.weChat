@@ -1,18 +1,15 @@
 package com.xsl.weChat.service.impl;
 
+import com.xsl.weChat.common.enums.TaskStateEnum;
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.common.util.DateUtil;
 import com.xsl.weChat.common.util.UUIdTaskIdUtil;
 import com.xsl.weChat.service.XslTaskService;
 import com.xsl.wechat.dto.XslTaskDTO;
 import com.xsl.wechat.dto.XslTaskDetailDTO;
-import com.xsl.wechat.mapper.XslFileMapper;
-import com.xsl.wechat.mapper.XslTaskAreaMapper;
-import com.xsl.wechat.mapper.XslTaskMapper;
-import com.xsl.wechat.pojo.XslFile;
-import com.xsl.wechat.pojo.XslHunterTask;
-import com.xsl.wechat.pojo.XslTask;
-import com.xsl.wechat.pojo.XslTaskArea;
+import com.xsl.wechat.mapper.*;
+import com.xsl.wechat.pojo.*;
+import com.xsl.wechat.vo.MyAcceptTaskVo;
 import com.xsl.wechat.vo.XslTaskReqVo;
 import com.xsl.wechat.vo.XslTaskVo;
 import org.slf4j.Logger;
@@ -45,6 +42,12 @@ public class XslTaskServiceImpl implements XslTaskService {
 
     @Autowired
     private XslFileMapper xslFileMapper;
+
+    @Autowired
+    private XslUserMapper xslUserMapper;
+
+    @Autowired
+    private XslHunterTaskMapper xslHunterTaskMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(XslTaskServiceImpl.class);
 
@@ -150,15 +153,15 @@ public class XslTaskServiceImpl implements XslTaskService {
             return XslResult.build(403,"您还没有接受任何任务");
         }
         try {
-            List<XslTaskDTO> xslTaskDTOList = new ArrayList<XslTaskDTO>(15);
+            List<MyAcceptTaskVo> myAcceptTaskVos = new ArrayList<MyAcceptTaskVo>(15);
             for(XslHunterTask xslHunterTask:xslHunterTasks){
                 XslTask xslTask = xslTaskMapper.getTaskByTasKId(xslHunterTask.getTaskId());
-                XslTaskDTO xslTaskDTO = supplementXskTaskDTO(xslTask);
-                xslTaskDTO.setMissionState(xslHunterTask.getTaskState());
-                xslTaskDTOList.add(xslTaskDTO);
+                MyAcceptTaskVo myAcceptTaskVo = supplementMyAcceptTaskVo(xslTask);
+                myAcceptTaskVo.setMissionState(xslHunterTask.getTaskState());
+                myAcceptTaskVos.add(myAcceptTaskVo);
             }
             if(xslHunterTasks.size()>0){
-                return XslResult.build(1,"正常",xslTaskDTOList);
+                return XslResult.build(1,"正常",myAcceptTaskVos);
             }
         }catch (Exception e){
             logger.error("服务器异常警告:"+e.getMessage());
@@ -191,6 +194,24 @@ public class XslTaskServiceImpl implements XslTaskService {
         BeanUtils.copyProperties(xslTaskVo,xslTaskDetailDTO);
         xslTaskDetailDTO.setMissionState(xslTask.getState());
         xslTaskDetailDTO.setMissionDetail(xslTask.getContent());
+        logger.info("sign="+xslTask.getState().equals(TaskStateEnum.TASK_ONGOING));
+        if(xslTask.getState().equals(TaskStateEnum.TASK_ONGOING.getState())){
+            String hunterId = xslHunterTaskMapper.getSendIdByTaskId(xslTask.getTaskId());
+            XslUserExample example = new XslUserExample();
+            XslUserExample.Criteria criteria = example.createCriteria();
+            criteria.andHunteridEqualTo(hunterId);
+            List<XslUser> xslUsers = xslUserMapper.selectByExample(example);
+            if (xslUsers!=null&&xslUsers.size()>0){
+                xslTaskDetailDTO.setAcceptUserName(xslUsers.get(0).getName());
+                XslFileExample fileExample = new XslFileExample();
+                XslFileExample.Criteria fileExampleCriteria = fileExample.createCriteria();
+                fileExampleCriteria.andFileidEqualTo(xslUsers.get(0).getUserid());
+                List<XslFile> list = xslFileMapper.selectByExample(fileExample);
+                xslTaskDetailDTO.setAcceptUserAvatarUrl(list.get(0).getUrl());
+                xslTaskDetailDTO.setPhoneNum(xslUsers.get(0).getPhone());
+            }
+            xslTaskDetailDTO.getAcceptUserName();
+        }
         return xslTaskDetailDTO;
     }
 
@@ -200,6 +221,22 @@ public class XslTaskServiceImpl implements XslTaskService {
         BeanUtils.copyProperties(xslTaskVo,xslTaskDTO);
         xslTaskDTO.setId(xslTask.getTaskId());
         return xslTaskDTO;
+    }
+
+    private MyAcceptTaskVo supplementMyAcceptTaskVo(XslTask xslTask){
+        MyAcceptTaskVo myAcceptTaskVo = new MyAcceptTaskVo();
+        XslTaskDTO xslTaskDTO = supplementXskTaskDTO(xslTask);
+        BeanUtils.copyProperties(xslTaskDTO,myAcceptTaskVo);
+        XslUserExample example = new XslUserExample();
+        XslUserExample.Criteria criteria = example.createCriteria();
+        criteria.andMasteridEqualTo(xslTask.getSendId());
+        List<XslUser> list = xslUserMapper.selectByExample(example);
+        if(list!=null&&list.size()>0){
+            myAcceptTaskVo.setIssueUserName(list.get(0).getName());
+            myAcceptTaskVo.setIssueUserPhoneNum(list.get(0).getPhone());
+        }
+        myAcceptTaskVo.setIssueUserAvatarUrl(xslTaskMapper.getImageBySendId(xslTask.getSendId()));
+        return myAcceptTaskVo;
     }
 
     private XslTaskVo supplementXslTakVo(XslTask xslTask) {

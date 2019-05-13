@@ -9,4 +9,11 @@ public interface XslHunterTaskMapper {
      * @param map
      */
     void updateHunterTask(Map map);
+
+    /**
+     * 通过任务id查询猎人id
+     * @param taskId
+     * @return
+     */
+    String getSendIdByTaskId(String taskId);
 }

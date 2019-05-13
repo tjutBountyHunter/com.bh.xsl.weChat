@@ -14,18 +14,15 @@ public enum UserStateEnum {
     NORMAL((byte)1, "正常"),
     FREEZE((byte)-1, "用户冻结"),
     CHECK_PENDING_EXCEPTION((byte)-2, "用户审核未通过"),
-    DELETE((byte)-3, "用户已被删除");
-    private Byte code;
-    private String info;
+    DELETE((byte)-3, "用户已被删除")
     ;
 
-    private Byte state;
+    private Byte code;
+    private String info;
 
-    private String msg;
-
-    UserStateEnum(Byte state, String msg) {
-        this.state = state;
-        this.msg = msg;
+    UserStateEnum(Byte code, String info) {
+        this.code = code;
+        this.info = info;
     }
 
     public Byte getCode() {

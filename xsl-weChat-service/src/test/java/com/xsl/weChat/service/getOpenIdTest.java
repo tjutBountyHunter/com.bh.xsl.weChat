@@ -26,4 +26,9 @@ public class getOpenIdTest {
         }
     }
 
+    @Test
+    public void getAccessToken(){
+
+    }
+
 }

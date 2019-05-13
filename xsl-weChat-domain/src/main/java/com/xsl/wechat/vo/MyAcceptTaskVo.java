@@ -1,15 +1,12 @@
 package com.xsl.wechat.vo;
 
-import java.util.List;
-
 /**
  * @author 梁俊伟
  * @version 1.0
- * @date 2019/4/29 21:01
+ * @date 2019/5/10 17:53
  */
-public class XslTaskReqVo {
-
-    private String userId;
+public class MyAcceptTaskVo {
+    private String id;
 
     private String title;
 
@@ -21,22 +18,24 @@ public class XslTaskReqVo {
 
     private String issueTime;
 
-    private String missionDetail;
-
     private String address;
 
     private String addressNoun;
 
-    private List<TagVo> tagVos;
+    private String issueUserName;
 
-    private String sourceType;
+    private String issueUserAvatarUrl;
 
-    public String getUserId() {
-        return userId;
+    private String issueUserPhoneNum;
+
+    private Byte missionState;
+
+    public String getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -79,14 +78,6 @@ public class XslTaskReqVo {
         this.issueTime = issueTime;
     }
 
-    public String getMissionDetail() {
-        return missionDetail;
-    }
-
-    public void setMissionDetail(String missionDetail) {
-        this.missionDetail = missionDetail;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -103,11 +94,35 @@ public class XslTaskReqVo {
         this.addressNoun = addressNoun;
     }
 
-    public String getSourceType() {
-        return sourceType;
+    public String getIssueUserName() {
+        return issueUserName;
     }
 
-    public void setSourceType(String sourceType) {
-        this.sourceType = sourceType;
+    public void setIssueUserName(String issueUserName) {
+        this.issueUserName = issueUserName;
+    }
+
+    public String getIssueUserAvatarUrl() {
+        return issueUserAvatarUrl;
+    }
+
+    public void setIssueUserAvatarUrl(String issueUserAvatarUrl) {
+        this.issueUserAvatarUrl = issueUserAvatarUrl;
+    }
+
+    public String getIssueUserPhoneNum() {
+        return issueUserPhoneNum;
+    }
+
+    public void setIssueUserPhoneNum(String issueUserPhoneNum) {
+        this.issueUserPhoneNum = issueUserPhoneNum;
+    }
+
+    public Byte getMissionState() {
+        return missionState;
+    }
+
+    public void setMissionState(Byte missionState) {
+        this.missionState = missionState;
     }
 }
