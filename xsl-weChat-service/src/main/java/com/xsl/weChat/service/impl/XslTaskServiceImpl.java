@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
@@ -48,6 +49,9 @@ public class XslTaskServiceImpl implements XslTaskService {
 
     @Autowired
     private XslHunterTaskMapper xslHunterTaskMapper;
+
+    @Autowired
+    private XslTaskFileMapper xslTaskFileMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(XslTaskServiceImpl.class);
 
@@ -86,21 +90,21 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param xslTaskReqVo
      * @return
      */
-    @Transactional(rollbackFor = RuntimeException.class)
+    @Transactional(rollbackFor = RuntimeException.class,propagation = Propagation.REQUIRED)
     public XslResult issueTask(XslTaskReqVo xslTaskReqVo) {
         if (xslTaskReqVo == null) {
             return XslResult.build(-1, "取得数据为空");
         }
         try {
-
             String taskId = UUIdTaskIdUtil.getUUID();
             initTaskArea(xslTaskReqVo, taskId);
             writeTask(xslTaskReqVo, taskId);
-//            initXslFile(taskId,xslTaskReqVo);
+            XslFile xslFile = initXslFile(taskId,xslTaskReqVo);
+            //TODO 还有一部分为完成
+//            initXslTaskFile(xslFile,taskId);
             return XslResult.build(1, "正常",taskId);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
             return XslResult.build(-1, "服务器异常");
         }
     }
@@ -136,7 +140,6 @@ public class XslTaskServiceImpl implements XslTaskService {
             }
         } catch (Exception e) {
             logger.error(e.getMessage());
-            e.printStackTrace();
         }
         return XslResult.build(-1, "服务器异常");
     }
@@ -170,6 +173,11 @@ public class XslTaskServiceImpl implements XslTaskService {
         return XslResult.build(-1,"服务器异常");
     }
 
+    /**
+     * 任务详情
+     * @param taskId
+     * @return
+     */
     public XslResult getTaskDetail(String taskId) {
         if(StringUtils.isEmpty(taskId)){
             return XslResult.build(403,"任务id为空");
@@ -305,7 +313,7 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param taskId
      * @param xslTaskReqVo
      */
-    private void initXslFile(String taskId, XslTaskReqVo xslTaskReqVo){
+    private XslFile initXslFile(String taskId, XslTaskReqVo xslTaskReqVo){
         //初始化文件信息
         XslFile xslFile = new XslFile();
         xslFile.setFileid(taskId);
@@ -322,5 +330,26 @@ public class XslTaskServiceImpl implements XslTaskService {
             e.printStackTrace();
             throw new RuntimeException("服务器异常");
         }
+        return xslFile;
     }
+
+    private void initXslTaskFile(XslFile xslFile,String taskId){
+        XslTaskFile xslTaskFile = new XslTaskFile();
+        xslTaskFile.setTaskId(taskId);
+        xslTaskFile.setFileId(xslFile.getFileid());
+        xslTaskFile.setType("微信任务图片");
+        xslTaskFile.setCreateDate(new Date());
+        xslTaskFile.setUpdateDate(new Date());
+        try {
+            int result = xslTaskFileMapper.insetTaskFile(xslTaskFile);
+
+            if(result < 1){
+                throw new RuntimeException("任务文件关联表信息存储失败");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("服务器异常");
+        }
+    }
+
 }

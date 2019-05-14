@@ -103,6 +103,14 @@ public class XslTaskReqVo {
         this.addressNoun = addressNoun;
     }
 
+    public List<TagVo> getTagVos() {
+        return tagVos;
+    }
+
+    public void setTagVos(List<TagVo> tagVos) {
+        this.tagVos = tagVos;
+    }
+
     public String getSourceType() {
         return sourceType;
     }

@@ -69,7 +69,7 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
                     weChatAccountConfig.setState(list.get(0).getState());
                     return XslResult.build(1,"正常",weChatAccountConfig);
                 }
-                weChatAccountConfig.setState(list.get(0).getState());
+                weChatAccountConfig.setState(UserStateEnum.CHECK_PENDING.getCode());
                 XslUser xslUser = new XslUser();
                 xslUser.setUserid(userId);
                 xslUser.setName(nickName);

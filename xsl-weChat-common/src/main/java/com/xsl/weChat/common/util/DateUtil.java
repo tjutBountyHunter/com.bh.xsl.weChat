@@ -29,7 +29,7 @@ public class DateUtil {
     }
 
     public static synchronized String dateToString(Date date){
-        String dateString = dateFormat.format(new Date());
+        String dateString = dateFormat.format(date);
         return dateString;
     }
 

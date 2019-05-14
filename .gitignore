@@ -1,0 +1,16 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+xsl-weChat-common/target/
+xsl-weChat-dao/target/
+xsl-weChat-domain/target/
+xsl-weChat-export/target/
+xsl-weChat-rpc/target/
+xsl-weChat-service/target/
+xsl-weChat-web/target/
