@@ -2,12 +2,14 @@ package com.xsl.wechat.controller;
 
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.service.XslTaskService;
-import com.xsl.wechat.vo.XslTaskReqVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @author 梁俊伟
@@ -43,13 +45,13 @@ public class XslTaskController {
 
     /**
      * 发布任务
-     * @param xslTaskReqVo
+     * @param issueData
      * @return
      */
     @RequestMapping(value = "/issueTask",method = RequestMethod.POST)
     @ResponseBody
-    public XslResult issueTask(@RequestBody XslTaskReqVo xslTaskReqVo){
-        XslResult xslResult = xslTaskService.issueTask(xslTaskReqVo);
+    public XslResult issueTask(String issueData){
+        XslResult xslResult = xslTaskService.issueTask(issueData);
         return xslResult;
     }
 

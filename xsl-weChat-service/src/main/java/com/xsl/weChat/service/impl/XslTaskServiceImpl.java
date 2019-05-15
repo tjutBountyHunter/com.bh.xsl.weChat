@@ -3,6 +3,7 @@ package com.xsl.weChat.service.impl;
 import com.xsl.weChat.common.enums.TaskStateEnum;
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.common.util.DateUtil;
+import com.xsl.weChat.common.util.JsonUtils;
 import com.xsl.weChat.common.util.UUIdTaskIdUtil;
 import com.xsl.weChat.service.XslTaskService;
 import com.xsl.wechat.dto.XslTaskDTO;
@@ -99,15 +100,18 @@ public class XslTaskServiceImpl implements XslTaskService {
 
     /**
      * 发布任务
-     * @param xslTaskReqVo
+     * @param issueData
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class,propagation = Propagation.REQUIRED)
     @Override
-    public XslResult issueTask(XslTaskReqVo xslTaskReqVo) {
-        if (xslTaskReqVo == null) {
+    public XslResult issueTask(String issueData) {
+
+        if (StringUtils.isEmpty(issueData)) {
             return XslResult.build(-1, "取得数据为空");
         }
+
+        XslTaskReqVo xslTaskReqVo = JsonUtils.jsonToPojo(issueData, XslTaskReqVo.class);
         try {
             String taskId = UUIdTaskIdUtil.getUUID();
             initTaskArea(xslTaskReqVo, taskId);

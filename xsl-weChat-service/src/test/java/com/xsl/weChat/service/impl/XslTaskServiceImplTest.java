@@ -2,6 +2,7 @@ package com.xsl.weChat.service.impl;
 
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.common.util.DateUtil;
+import com.xsl.weChat.common.util.JsonUtils;
 import com.xsl.wechat.vo.XslTaskReqVo;
 import org.junit.Assert;
 import org.junit.Test;
@@ -43,7 +44,8 @@ public class XslTaskServiceImplTest {
         xslTaskVo.setIssueTime(DateUtil.dateToString(new Date()));
         xslTaskVo.setMissionDetail("这是一个好任务");
         xslTaskVo.setAddressNoun("北区29号楼");
-        XslResult xslResult = xslTaskService.issueTask(xslTaskVo);
+        String json = JsonUtils.objectToJson(xslTaskVo);
+        XslResult xslResult = xslTaskService.issueTask(json);
         Assert.assertEquals(1,new Long(xslResult.getStatus()).longValue());
     }
 

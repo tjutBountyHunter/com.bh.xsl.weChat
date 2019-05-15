@@ -1,7 +1,6 @@
 package com.xsl.weChat.service;
 
 import com.xsl.weChat.common.pojo.XslResult;
-import com.xsl.wechat.vo.XslTaskReqVo;
 
 /**
  * @author 梁俊伟
@@ -20,10 +19,10 @@ public interface XslTaskService {
 
     /**
      * 发布任务
-     * @param xslTaskReqVo
+     * @param issueData
      * @return
      */
-    XslResult issueTask(XslTaskReqVo xslTaskReqVo);
+    XslResult issueTask(String issueData);
 
     /**
      * 得到我发送过的任务
