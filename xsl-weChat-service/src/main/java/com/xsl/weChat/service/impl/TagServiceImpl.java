@@ -24,6 +24,7 @@ public class TagServiceImpl implements TagService {
 
     private static final Logger logger = LoggerFactory.getLogger(TagServiceImpl.class);
 
+    @Override
     public XslResult getTagList() {
         List<TagVo> tagVoList = xslTagMapper.getTagList();
         try {

@@ -32,6 +32,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private XslUserMapper xslUserMapper;
 
+    @Override
     public XslResult AuthenticationUser(AuthenticationReqVo authenticationReqVo) {
         if(authenticationReqVo==null){
             return XslResult.build(-1,"认证信息不能为空");

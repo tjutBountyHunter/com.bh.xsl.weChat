@@ -26,6 +26,7 @@ public class XslAcceptTaskServiceImpl implements XslAcceptTaskService {
     private XslHunterTaskMapper HunterTaskDao;
     private static final Logger logger = LoggerFactory.getLogger(XslAcceptTaskServiceImpl.class);
 
+    @Override
     public XslResult AcceptTask(String userId, String taskId) {
 
         Map<String, String> map = new HashMap<String, String>();

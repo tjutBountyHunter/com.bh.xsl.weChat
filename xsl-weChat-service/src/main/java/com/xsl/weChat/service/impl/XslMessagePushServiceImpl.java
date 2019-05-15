@@ -22,6 +22,7 @@ public class XslMessagePushServiceImpl implements XslMessagePushService {
 
     private static final Logger logger = LoggerFactory.getLogger(XslMessagePushServiceImpl.class);
 
+    @Override
     public XslResult pushMessageToHunter(String template) {
 
         try {

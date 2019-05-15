@@ -35,6 +35,7 @@ public class SchoolServiceImpl implements SchoolService {
 
     private static final Logger logger = LoggerFactory.getLogger(SchoolServiceImpl.class);
 
+    @Override
     public XslResult schoolMessage() {
         String version = "1";
         SchoolResVo schoolResVo = new SchoolResVo();

@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author 梁俊伟
@@ -49,9 +46,9 @@ public class XslTaskController {
      * @param xslTaskReqVo
      * @return
      */
-    @RequestMapping(value = "/issueTask",method = RequestMethod.GET)
+    @RequestMapping(value = "/issueTask",method = RequestMethod.POST)
     @ResponseBody
-    public XslResult issueTask(XslTaskReqVo xslTaskReqVo){
+    public XslResult issueTask(@RequestBody XslTaskReqVo xslTaskReqVo){
         XslResult xslResult = xslTaskService.issueTask(xslTaskReqVo);
         return xslResult;
     }

@@ -45,6 +45,7 @@ public class XslGetWeChatServiceImpl implements XslGetWeChatService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(XslGetWeChatServiceImpl.class);
 
+    @Override
     @Transactional(rollbackFor = RuntimeException.class)
     public XslResult getOpenIdAndSessionKey(String code, String nickName, String avatarUrl) {
         if(StringUtils.isEmpty(code)){

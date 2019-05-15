@@ -25,6 +25,7 @@ public class DealTaskServiceImpl implements DealTaskService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DealTaskServiceImpl.class);
 
+    @Override
     public XslResult deleteTask(String taskId) {
         try {
             //非空判断
@@ -49,6 +50,7 @@ public class DealTaskServiceImpl implements DealTaskService {
         }
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public XslResult completeTask(String taskId) {
         try {
@@ -78,6 +80,7 @@ public class DealTaskServiceImpl implements DealTaskService {
         }
     }
 
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public XslResult cancelAcceptTask(String taskId) {
         try {

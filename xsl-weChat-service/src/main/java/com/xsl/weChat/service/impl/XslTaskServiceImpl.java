@@ -10,6 +10,7 @@ import com.xsl.wechat.dto.XslTaskDetailDTO;
 import com.xsl.wechat.mapper.*;
 import com.xsl.wechat.pojo.*;
 import com.xsl.wechat.vo.MyAcceptTaskVo;
+import com.xsl.wechat.vo.TagVo;
 import com.xsl.wechat.vo.XslTaskReqVo;
 import com.xsl.wechat.vo.XslTaskVo;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +55,15 @@ public class XslTaskServiceImpl implements XslTaskService {
     @Autowired
     private XslTaskFileMapper xslTaskFileMapper;
 
+    @Autowired
+    private XslTaskTagMapper xslTaskTagMapper;
+
+    @Autowired
+    private XslTagMapper xslTagMapper;
+
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
+
     private static final Logger logger = LoggerFactory.getLogger(XslTaskServiceImpl.class);
 
     /**
@@ -61,6 +72,7 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param pageSize
      * @return
      */
+    @Override
     public XslResult getTaskList(Integer pageNum, Integer pageSize) {
         Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("pageNum", pageNum - 1);
@@ -91,6 +103,7 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class,propagation = Propagation.REQUIRED)
+    @Override
     public XslResult issueTask(XslTaskReqVo xslTaskReqVo) {
         if (xslTaskReqVo == null) {
             return XslResult.build(-1, "取得数据为空");
@@ -100,12 +113,16 @@ public class XslTaskServiceImpl implements XslTaskService {
             initTaskArea(xslTaskReqVo, taskId);
             writeTask(xslTaskReqVo, taskId);
             XslFile xslFile = initXslFile(taskId,xslTaskReqVo);
-            //TODO 还有一部分为完成
-//            initXslTaskFile(xslFile,taskId);
+            initXslTaskFile(xslFile,taskId);
+            XslResult xslResult = addTaskTags(xslTaskReqVo,taskId);
+            if(!xslResult.isOK()){
+                logger.info("【添加任务标签】添加任务标签失败 xslResult = {}",xslResult);
+                return XslResult.build(-1,"标签添加失败");
+            }
             return XslResult.build(1, "正常",taskId);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return XslResult.build(-1, "服务器异常");
+            return XslResult.build(500, "服务器异常");
         }
     }
 
@@ -114,6 +131,7 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param sendId
      * @return
      */
+    @Override
     public XslResult getMyIssueTask(String sendId) {
         List<XslTask> xslTaskList = xslTaskMapper.getMyTaskList(xslTaskMapper.getMasterIdByOpenId(sendId));
         if (xslTaskList == null&&xslTaskList.size()<1) {
@@ -149,6 +167,7 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param userId
      * @return
      */
+    @Override
     public XslResult getMyAcceptTask(String userId) {
 
         List<XslHunterTask> xslHunterTasks = xslTaskMapper.getMyAcceptTask(xslTaskMapper.getHunterIdByOpenId(userId));
@@ -178,6 +197,7 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param taskId
      * @return
      */
+    @Override
     public XslResult getTaskDetail(String taskId) {
         if(StringUtils.isEmpty(taskId)){
             return XslResult.build(403,"任务id为空");
@@ -333,6 +353,11 @@ public class XslTaskServiceImpl implements XslTaskService {
         return xslFile;
     }
 
+    /**
+     * 初始化任务信息
+     * @param xslFile
+     * @param taskId
+     */
     private void initXslTaskFile(XslFile xslFile,String taskId){
         XslTaskFile xslTaskFile = new XslTaskFile();
         xslTaskFile.setTaskId(taskId);
@@ -347,9 +372,64 @@ public class XslTaskServiceImpl implements XslTaskService {
                 throw new RuntimeException("任务文件关联表信息存储失败");
             }
         }catch (Exception e){
-            e.printStackTrace();
+            logger.error("服务器异常:"+e.getMessage());
             throw new RuntimeException("服务器异常");
         }
+    }
+
+    /**
+     * 更新任务标签使用数
+     * @param tags
+     * @return
+     */
+    private XslResult updateTagNum(List<TagVo> tags){
+        List<String> tagIds = new ArrayList<>(tags.size());
+        for (TagVo tagVo : tags){
+            tagIds.add(tagVo.getTagId());
+        }
+
+        XslTagExample xslTagExample = new XslTagExample();
+        XslTagExample.Criteria criteria = xslTagExample.createCriteria();
+        criteria.andTagidIn(tagIds);
+        int i = xslTagMapper.updateUseNumByExample(xslTagExample);
+        if(i < 1){
+            throw new RuntimeException();
+        }
+        return XslResult.ok();
+    }
+
+    /**
+     * 添加任务标签
+     * @param xslTaskReqVo
+     * @param taskId
+     * @return
+     */
+    private XslResult addTaskTags(final XslTaskReqVo xslTaskReqVo, String taskId){
+        try {
+            List<TagVo> tagVos = xslTaskReqVo.getTagVos();
+            if (tagVos.size() < 1){
+                return XslResult.ok();
+            }
+
+            List<XslTaskTag> xslTaskTags = new ArrayList<XslTaskTag>();
+            for(TagVo tagVo : tagVos){
+                XslTaskTag xslTaskTag = new XslTaskTag();
+                xslTaskTag.setTaskid(taskId);
+                xslTaskTag.setTagid(tagVo.getTagId());
+                xslTaskTags.add(xslTaskTag);
+            }
+            int i = xslTaskTagMapper.insertSelectiveBatch(xslTaskTags);
+
+            if(i<xslTaskTags.size()){
+                throw new RuntimeException("插入任务标签关联表失败");
+            }
+            //异步去处理标签使用的次数
+            taskExecutor.execute(() -> updateTagNum(xslTaskReqVo.getTagVos()));
+        }catch (Exception e){
+            e.printStackTrace();
+            return XslResult.build(500,"服务异常");
+        }
+        return XslResult.ok();
     }
 
 }
