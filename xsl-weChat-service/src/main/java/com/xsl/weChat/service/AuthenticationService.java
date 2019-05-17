@@ -1,7 +1,6 @@
 package com.xsl.weChat.service;
 
-import com.xsl.weChat.common.pojo.XslResult;
-import com.xsl.wechat.vo.AuthenticationReqVo;
+import vo.ResBaseVo;
 
 /**
  * @author 梁俊伟
@@ -10,8 +9,11 @@ import com.xsl.wechat.vo.AuthenticationReqVo;
  */
 public interface AuthenticationService {
 
-    XslResult AuthenticationUser(AuthenticationReqVo authenticationReqVo);
+//    XslResult AuthenticationUser(AuthenticationReqVo authenticationReqVo);
 
 //    XslResult getSchoolInfo();
 
+    ResBaseVo AuthenticationUser(String personalMessage, String phone);
+
+//    ResBaseVo AuthenticationUser(UserAccReqVo userAccReqVo);
 }

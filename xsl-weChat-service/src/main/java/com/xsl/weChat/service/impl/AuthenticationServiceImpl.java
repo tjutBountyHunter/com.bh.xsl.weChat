@@ -1,19 +1,16 @@
 package com.xsl.weChat.service.impl;
 
-import com.xsl.weChat.common.enums.UserStateEnum;
-import com.xsl.weChat.common.pojo.XslResult;
+import com.xsl.user.SupplementUserInfoResource;
+import com.xsl.weChat.common.util.JsonUtils;
 import com.xsl.weChat.service.AuthenticationService;
-import com.xsl.wechat.mapper.AuthenticationMapper;
-import com.xsl.wechat.mapper.XslUserMapper;
-import com.xsl.wechat.pojo.XslUser;
-import com.xsl.wechat.pojo.XslUserExample;
-import com.xsl.wechat.vo.AuthenticationReqVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import vo.ResBaseVo;
+import vo.UserAccReqVo;
 
-import java.util.List;
+import javax.annotation.Resource;
 
 /**
  * 用户认证
@@ -26,38 +23,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticationServiceImpl.class);
 
-    @Autowired
-    private AuthenticationMapper authenticationMapper;
-
-    @Autowired
-    private XslUserMapper xslUserMapper;
+    @Resource
+    private SupplementUserInfoResource supplementUserInfoResource;
 
     @Override
-    public XslResult AuthenticationUser(AuthenticationReqVo authenticationReqVo) {
-        if(authenticationReqVo==null){
-            return XslResult.build(-1,"认证信息不能为空");
-        }
+    public ResBaseVo AuthenticationUser(String personalMessage,String phone){
         try {
-            XslUserExample example = new XslUserExample();
-            XslUserExample.Criteria criteria = example.createCriteria();
-            criteria.andUseridEqualTo(authenticationReqVo.getUserId());
-            List<XslUser> list = xslUserMapper.selectByExample(example);
-            if(list==null||list.size()==0){
-                return XslResult.build(-1,"没有该用户");
+            UserAccReqVo userAccReqVo = JsonUtils.jsonToPojo(personalMessage, UserAccReqVo.class);
+            if (StringUtils.isEmpty(phone)){
+                return ResBaseVo.build(-1,"电话号码不能为空");
             }
-            LOGGER.info("code:"+UserStateEnum.CHECK_PENDING.getCode());
-            LOGGER.info("state:" + list.get(0).getState().equals(UserStateEnum.CHECK_PENDING.getCode()));
-            if(!list.get(0).getState().equals(UserStateEnum.CHECK_PENDING.getCode())){
-                return XslResult.build(-1,"您以认证");
-            }
-            authenticationMapper.AuthenticationUser(authenticationReqVo);
-            return XslResult.build(1,"认证成功");
-
+            userAccReqVo.setPhone(userAccReqVo.getPhone());
+            userAccReqVo.setSource("wechat");
+            ResBaseVo resBaseVo = supplementUserInfoResource.userAcc(userAccReqVo);
+            return resBaseVo;
         }catch (Exception e){
-            LOGGER.error("服务器异常警告:"+e.getMessage());
-            e.printStackTrace();
-            return XslResult.build(500,"服务器异常");
+            LOGGER.error("服务器异常:"+e.getMessage());
+            return ResBaseVo.build(500,"服务器异常");
         }
-
     }
+
 }

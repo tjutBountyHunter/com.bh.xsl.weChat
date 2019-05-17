@@ -1,12 +1,12 @@
 package com.xsl.wechat.controller;
 
-import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.service.AuthenticationService;
-import com.xsl.wechat.vo.AuthenticationReqVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import vo.ResBaseVo;
 
 /**
  * @author 梁俊伟
@@ -21,9 +21,9 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @RequestMapping("/personalMessage")
-    public XslResult authenticationUser(AuthenticationReqVo authenticationReqVo){
-        XslResult xslResult = authenticationService.AuthenticationUser(authenticationReqVo);
-        return xslResult;
+    public ResBaseVo userAcc(String personalMessage, @RequestParam(value = "phoneNumber") String phone){
+        ResBaseVo resBaseVo = authenticationService.AuthenticationUser(personalMessage,phone);
+        return resBaseVo;
     }
 
 }
