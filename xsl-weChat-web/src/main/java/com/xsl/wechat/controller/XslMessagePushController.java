@@ -21,8 +21,15 @@ public class XslMessagePushController {
 
     @RequestMapping("/hunterMessage")
     @ResponseBody
-    public XslResult pushMessageToHunter(String template){
-        XslResult xslResult = xslMessagePushService.pushMessageToHunter(template);
+    public XslResult pushMessageToHunter(String template,String taskId){
+        XslResult xslResult = xslMessagePushService.pushMessageToHunter(template,taskId);
+        return xslResult;
+    }
+
+    @RequestMapping("/masterMessage")
+    @ResponseBody
+    public XslResult pushMessageToMaster(String template){
+        XslResult xslResult = xslMessagePushService.pushMessageToMaster(template);
         return xslResult;
     }
 }

@@ -27,14 +27,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private SupplementUserInfoResource supplementUserInfoResource;
 
     @Override
-    public ResBaseVo AuthenticationUser(String personalMessage,String phone){
+    public ResBaseVo AuthenticationUser(String personalMessage){
         try {
             UserAccReqVo userAccReqVo = JsonUtils.jsonToPojo(personalMessage, UserAccReqVo.class);
-            if (StringUtils.isEmpty(phone)){
-                return ResBaseVo.build(-1,"电话号码不能为空");
+            if (StringUtils.isEmpty(personalMessage)){
+                return ResBaseVo.build(-1,"数据不能为空");
             }
             userAccReqVo.setPhone(userAccReqVo.getPhone());
-            userAccReqVo.setSource("wechat");
+            userAccReqVo.setSource("weChat");
             ResBaseVo resBaseVo = supplementUserInfoResource.userAcc(userAccReqVo);
             return resBaseVo;
         }catch (Exception e){

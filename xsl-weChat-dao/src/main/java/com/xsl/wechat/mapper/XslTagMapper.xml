@@ -238,6 +238,11 @@
           from
         xsl_tag
     </select>
+    <select id="getTagNameByTagId"  resultType="java.lang.String">
+        select name
+          from
+        xsl_tag where tagId = #{tagId}
+    </select>
 
     <update id="updateByExampleSelective" parameterType="map" >
         update xsl_tag

@@ -28,4 +28,6 @@ public interface XslFileMapper {
     int updateByPrimaryKeySelective(XslFile record);
 
     int updateByPrimaryKey(XslFile record);
+
+    List<String> getTaskImagesByTaskId(String taskId);
 }

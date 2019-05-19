@@ -20,6 +20,11 @@
     </properties>
 
     <dependencies>
+        <!--gson相关-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+        </dependency>
         <!-- 时间操作组件 -->
         <dependency>
             <groupId>joda-time</groupId>

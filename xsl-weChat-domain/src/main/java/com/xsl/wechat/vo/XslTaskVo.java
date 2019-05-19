@@ -1,5 +1,7 @@
 package com.xsl.wechat.vo;
 
+import java.util.List;
+
 /**
  * @author 梁俊伟
  * @version 1.0
@@ -21,6 +23,9 @@ public class XslTaskVo {
 
     /**悬赏金额*/
     private String money;
+
+    /**任务标签*/
+    private List<TagVo> tagVos;
 
     /**发布任务时间*/
     private String issueTime;
@@ -114,5 +119,13 @@ public class XslTaskVo {
 
     public void setAddressNoun(String addressNoun) {
         this.addressNoun = addressNoun;
+    }
+
+    public List<TagVo> getTagVos() {
+        return tagVos;
+    }
+
+    public void setTagVos(List<TagVo> tagVos) {
+        this.tagVos = tagVos;
     }
 }

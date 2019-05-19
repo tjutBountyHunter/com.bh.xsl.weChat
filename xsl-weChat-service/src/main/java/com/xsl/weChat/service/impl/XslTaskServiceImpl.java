@@ -3,7 +3,6 @@ package com.xsl.weChat.service.impl;
 import com.xsl.weChat.common.enums.TaskStateEnum;
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.common.util.DateUtil;
-import com.xsl.weChat.common.util.JsonUtils;
 import com.xsl.weChat.common.util.UUIdTaskIdUtil;
 import com.xsl.weChat.service.XslTaskService;
 import com.xsl.wechat.dto.XslTaskDTO;
@@ -88,7 +87,8 @@ public class XslTaskServiceImpl implements XslTaskService {
             List<XslTaskVo> xslTaskVoList = new ArrayList<XslTaskVo>(10);
             //补全信息
             for (XslTask xslTask : xslTaskList) {
-                XslTaskVo xslTaskVo = supplementXslTakVo(xslTask);
+                //type=1为补全分页任务信息
+                XslTaskVo xslTaskVo = supplementXslTakVo(1,xslTask);
                 xslTaskVoList.add(xslTaskVo);
             }
             return XslResult.build(1, "正常", xslTaskVoList);
@@ -100,24 +100,24 @@ public class XslTaskServiceImpl implements XslTaskService {
 
     /**
      * 发布任务
-     * @param issueData
+     * @param xslTaskReqVo
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class,propagation = Propagation.REQUIRED)
     @Override
-    public XslResult issueTask(String issueData) {
-
-        if (StringUtils.isEmpty(issueData)) {
-            return XslResult.build(-1, "取得数据为空");
-        }
-
-        XslTaskReqVo xslTaskReqVo = JsonUtils.jsonToPojo(issueData, XslTaskReqVo.class);
+    public XslResult issueTask(XslTaskReqVo xslTaskReqVo) {
         try {
+            if (xslTaskReqVo == null) {
+                return XslResult.build(-1, "取得数据为空");
+            }
+            int size = 4;
+            if (xslTaskReqVo.getIssueImg().size()>size){
+                return XslResult.build(-1,"存储图片不能超过4张");
+            }
             String taskId = UUIdTaskIdUtil.getUUID();
             initTaskArea(xslTaskReqVo, taskId);
             writeTask(xslTaskReqVo, taskId);
-            XslFile xslFile = initXslFile(taskId,xslTaskReqVo);
-            initXslTaskFile(xslFile,taskId);
+            initXslFile(taskId,xslTaskReqVo);
             XslResult xslResult = addTaskTags(xslTaskReqVo,taskId);
             if(!xslResult.isOK()){
                 logger.info("【添加任务标签】添加任务标签失败 xslResult = {}",xslResult);
@@ -126,7 +126,7 @@ public class XslTaskServiceImpl implements XslTaskService {
             return XslResult.build(1, "正常",taskId);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return XslResult.build(500, "服务器异常");
+            throw new RuntimeException("服务器异常");
         }
     }
 
@@ -161,7 +161,7 @@ public class XslTaskServiceImpl implements XslTaskService {
                 return XslResult.build(1, "正常", xslTaskVoList);
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("服务器异常信息："+e.getMessage());
         }
         return XslResult.build(-1, "服务器异常");
     }
@@ -220,12 +220,18 @@ public class XslTaskServiceImpl implements XslTaskService {
         return XslResult.build(-1,"服务器异常");
     }
 
+    /**
+     * 补全任务详情信息
+     * @param xslTask
+     * @return
+     */
     private XslTaskDetailDTO supplementXslTaskDetail(XslTask xslTask){
         XslTaskDetailDTO xslTaskDetailDTO = new XslTaskDetailDTO();
-        XslTaskVo xslTaskVo = supplementXslTakVo(xslTask);
+        XslTaskVo xslTaskVo = supplementXslTakVo(2,xslTask);
         BeanUtils.copyProperties(xslTaskVo,xslTaskDetailDTO);
         xslTaskDetailDTO.setMissionState(xslTask.getState());
         xslTaskDetailDTO.setMissionDetail(xslTask.getContent());
+        xslTaskDetailDTO.setIssueImg(xslFileMapper.getTaskImagesByTaskId(xslTask.getTaskId()));
         logger.info("sign="+xslTask.getState().equals(TaskStateEnum.TASK_ONGOING));
         if(xslTask.getState().equals(TaskStateEnum.TASK_ONGOING.getState())){
             String hunterId = xslHunterTaskMapper.getSendIdByTaskId(xslTask.getTaskId());
@@ -249,7 +255,7 @@ public class XslTaskServiceImpl implements XslTaskService {
 
     private XslTaskDTO supplementXskTaskDTO(XslTask xslTask){
         XslTaskDTO xslTaskDTO = new XslTaskDTO();
-        XslTaskVo xslTaskVo = supplementXslTakVo(xslTask);
+        XslTaskVo xslTaskVo = supplementXslTakVo(2,xslTask);
         BeanUtils.copyProperties(xslTaskVo,xslTaskDTO);
         xslTaskDTO.setId(xslTask.getTaskId());
         return xslTaskDTO;
@@ -271,7 +277,13 @@ public class XslTaskServiceImpl implements XslTaskService {
         return myAcceptTaskVo;
     }
 
-    private XslTaskVo supplementXslTakVo(XslTask xslTask) {
+    /**
+     * 补全信息
+     * @param type 1为分页查询
+     * @param xslTask
+     * @return
+     */
+    private XslTaskVo supplementXslTakVo(int type,XslTask xslTask) {
         XslTaskVo xslTaskVo = new XslTaskVo();
         XslTaskArea xslTaskArea = xslTaskAreaMapper.getTaskMsgByTaskId(xslTask.getTaskId());
         xslTaskVo.setType(xslTaskMapper.getCategoryNameByCid(xslTask.getCid()));
@@ -281,6 +293,9 @@ public class XslTaskServiceImpl implements XslTaskService {
         xslTaskVo.setIssueTime(DateUtil.dateToString(xslTask.getCreateDate()));
         xslTaskVo.setUserId(xslTaskMapper.getMasterByOpenId(xslTask.getSendId()));
         xslTaskVo.setTitle(xslTask.getTaskTitle());
+        if(type==1){
+            xslTaskVo.setTagVos(getTagVos(xslTask.getTaskId()));
+        }
         BeanUtils.copyProperties(xslTaskArea, xslTaskVo);
         xslTaskVo.setTaskId(xslTask.getTaskId());
         return xslTaskVo;
@@ -337,49 +352,50 @@ public class XslTaskServiceImpl implements XslTaskService {
      * @param taskId
      * @param xslTaskReqVo
      */
-    private XslFile initXslFile(String taskId, XslTaskReqVo xslTaskReqVo){
-        //初始化文件信息
-        XslFile xslFile = new XslFile();
-        xslFile.setFileid(taskId);
-        xslFile.setUrl(xslTaskReqVo.getIssueImg());
-        xslFile.setDescr("微信任务图片");
-        xslFile.setCreatedate(new Date());
+    private void initXslFile(String taskId, XslTaskReqVo xslTaskReqVo){
         try {
-            int result = xslFileMapper.insertSelective(xslFile);
-
-            if (result < 1){
-                throw new RuntimeException("任务图片存储失败");
+            List<String> images = xslTaskReqVo.getIssueImg();
+            for(String image : images){
+                //初始化文件信息
+                XslFile xslFile = new XslFile();
+                xslFile.setFileid(taskId);
+                xslFile.setDescr("微信任务图片");
+                xslFile.setUrl(image);
+                xslFile.setCreatedate(new Date());
+                int result = xslFileMapper.insertSelective(xslFile);
+                if (result < 1){
+                    throw new RuntimeException("任务图片存储失败");
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException("服务器异常");
         }
-        return xslFile;
     }
 
-    /**
-     * 初始化任务信息
-     * @param xslFile
-     * @param taskId
-     */
-    private void initXslTaskFile(XslFile xslFile,String taskId){
-        XslTaskFile xslTaskFile = new XslTaskFile();
-        xslTaskFile.setTaskId(taskId);
-        xslTaskFile.setFileId(xslFile.getFileid());
-        xslTaskFile.setType("微信任务图片");
-        xslTaskFile.setCreateDate(new Date());
-        xslTaskFile.setUpdateDate(new Date());
-        try {
-            int result = xslTaskFileMapper.insetTaskFile(xslTaskFile);
-
-            if(result < 1){
-                throw new RuntimeException("任务文件关联表信息存储失败");
-            }
-        }catch (Exception e){
-            logger.error("服务器异常:"+e.getMessage());
-            throw new RuntimeException("服务器异常");
-        }
-    }
+//    /**
+//     * 初始化话任务信息关联表
+//     * @param xslFile
+//     * @param taskId
+//     */
+//    private void initXslTaskFile(XslFile xslFile,String taskId){
+//        XslTaskFile xslTaskFile = new XslTaskFile();
+//        xslTaskFile.setTaskId(taskId);
+//        xslTaskFile.setFileId(xslFile.getFileid());
+//        xslTaskFile.setType("微信任务图片");
+//        xslTaskFile.setCreateDate(new Date());
+//        xslTaskFile.setUpdateDate(new Date());
+//        try {
+//            int result = xslTaskFileMapper.insetTaskFile(xslTaskFile);
+//
+//            if(result < 1){
+//                throw new RuntimeException("任务文件关联表信息存储失败");
+//            }
+//        }catch (Exception e){
+//            logger.error("服务器异常:"+e.getMessage());
+//            throw new RuntimeException("服务器异常");
+//        }
+//    }
 
     /**
      * 更新任务标签使用数
@@ -436,4 +452,27 @@ public class XslTaskServiceImpl implements XslTaskService {
         return XslResult.ok();
     }
 
+    private List<TagVo> getTagVos(String taskId){
+        if(StringUtils.isEmpty(taskId)){
+            throw new RuntimeException("任务不存在");
+        }
+        try {
+            List<String> tagIds = xslTaskTagMapper.getTagIdsByTaskId(taskId);
+            if(tagIds==null&&tagIds.size()<1){
+                return new ArrayList<TagVo>();
+            }
+            List<TagVo> tagVoList = new ArrayList<>();
+            for(String tagId:tagIds){
+                TagVo tagVo = new TagVo();
+                tagVo.setTagId(tagId);
+                String name = xslTagMapper.getTagNameByTagId(tagId);
+                tagVo.setName(name);
+                tagVoList.add(tagVo);
+            }
+            return tagVoList;
+        }catch (Exception e){
+            logger.error(e.getMessage());
+            throw new RuntimeException("服务器异常");
+        }
+    }
 }

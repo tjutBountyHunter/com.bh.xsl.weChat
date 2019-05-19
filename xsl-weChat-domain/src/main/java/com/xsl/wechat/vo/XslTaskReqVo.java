@@ -17,7 +17,7 @@ public class XslTaskReqVo {
 
     private String money;
 
-    private String issueImg;
+    private List<String> issueImg;
 
     private String issueTime;
 
@@ -63,12 +63,12 @@ public class XslTaskReqVo {
         this.money = money;
     }
 
-    public String getIssueImg() {
+    public List<String> getIssueImg() {
         return issueImg;
     }
 
-    public void setIssueImg(String issueImg) {
-        this.issueImg = issueImg;
+    public void setIssueImg(List<String> issueImgs) {
+        this.issueImg = issueImgs;
     }
 
     public String getIssueTime() {

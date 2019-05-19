@@ -14,5 +14,14 @@ public interface XslMessagePushService {
      * @param wxPushTemplate
      * @return
      */
-    XslResult pushMessageToHunter(String wxPushTemplate);
+    XslResult pushMessageToHunter(String wxPushTemplate,String taskId);
+
+
+    /**
+     * 给雇主发送推送
+     * @param wxPushTemplate
+     * @return
+     */
+    XslResult pushMessageToMaster(String wxPushTemplate);
+
 }

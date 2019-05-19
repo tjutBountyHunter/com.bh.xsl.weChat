@@ -238,14 +238,14 @@
         select
         <include refid="Base_Column_List" />
         from xsl_task_tag
-        where taskId = #{taskId,jdbcType=INTEGER}
+        where taskId = #{taskId,jdbcType=VARCHAR}
     </select>
 
     <select id="getTasksByTagId" resultMap="BaseResultMap" parameterType="java.lang.String" >
         select
         <include refid="Base_Column_List" />
         from xsl_task_tag
-        where tagId = #{taskTag,jdbcType=INTEGER}
+        where tagId = #{taskTag,jdbcType=VARCHAR}
     </select>
 
     <select id="selectTagIdByExample" resultType="java.lang.String" parameterType="com.xsl.wechat.pojo.XslTaskTagExample" >
@@ -258,5 +258,12 @@
         <if test="orderByClause != null" >
             order by ${orderByClause}
         </if>
+    </select>
+
+    <select id="getTagIdsByTaskId" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+        tagId
+        from xsl_task_tag
+        where taskId = #{taskId,jdbcType=VARCHAR}
     </select>
 </mapper>

@@ -13,7 +13,7 @@ public interface AuthenticationService {
 
 //    XslResult getSchoolInfo();
 
-    ResBaseVo AuthenticationUser(String personalMessage, String phone);
+    ResBaseVo AuthenticationUser(String personalMessage);
 
 //    ResBaseVo AuthenticationUser(UserAccReqVo userAccReqVo);
 }

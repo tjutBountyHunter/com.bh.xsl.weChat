@@ -157,6 +157,9 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+    <select id="getTaskImagesByTaskId" resultType="java.lang.String">
+      SELECT url from xsl_file WHERE fileId=#{taskId}
+    </select>
   <update id="updateByExampleSelective" parameterType="map" >
     update xsl_file
     <set >

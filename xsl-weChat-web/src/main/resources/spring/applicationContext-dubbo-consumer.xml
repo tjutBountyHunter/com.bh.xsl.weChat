@@ -12,7 +12,7 @@
     <dubbo:application name="xsl_wechat"/>
     <!-- 注册中心服务地址 -->
     <dubbo:registry protocol="zookeeper" address="47.93.230.61:2181"/>
-    <dubbo:reference id="supplementUserInfoResource" interface="com.xsl.user.SupplementUserInfoResource" />
+    <dubbo:reference id="supplementUserInfoResource" check="false" interface="com.xsl.user.SupplementUserInfoResource" />
     <!--<bean id="taskOperateResource" class="resourceImpl.TaskOperateResourceImpl"/>-->
     <!--<dubbo:reference interface="resource.TaskOperateResource" ref="taskOperateResource" timeout="600000"/>-->
 </beans>

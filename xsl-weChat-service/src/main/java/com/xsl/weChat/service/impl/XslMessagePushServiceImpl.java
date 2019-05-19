@@ -23,22 +23,49 @@ public class XslMessagePushServiceImpl implements XslMessagePushService {
     private static final Logger logger = LoggerFactory.getLogger(XslMessagePushServiceImpl.class);
 
     @Override
-    public XslResult pushMessageToHunter(String template) {
+    public XslResult pushMessageToHunter(String template,String taskId) {
+        try {
+            //TODO 筛选猎人
+            XslResult xslResult = pushMessage(template);
+            if(xslResult.isOK()){
+                return xslResult;
+            }
+            return XslResult.build(403,"服务器异常");
+        }catch (Exception e){
+            logger.error("服务器异常:"+e.getMessage());
+            throw new RuntimeException("服务器异常");
+        }
+    }
 
+    @Override
+    public XslResult pushMessageToMaster(String wxPushTemplate) {
+        try {
+            XslResult xslResult = pushMessage(wxPushTemplate);
+            if(xslResult.isOK()){
+                return xslResult;
+            }
+            return xslResult;
+        }catch (Exception e){
+            logger.error("服务器异常:"+e.getMessage());
+        }
+        return null;
+    }
+
+    private XslResult pushMessage(String template){
         try {
             AccessToken token = getAccessToken();
             if (token==null){
-                return XslResult.build(400,"获取token失败");
+                return XslResult.build(403,"获取token失败");
             }
             boolean flag = sendTemplateMsg(token.getAccessToken(),template);
             if (flag){
                 logger.info("推送成功");
-                return XslResult.build(1,"推送成功");
+                return XslResult.ok("推送成功");
             }
-            return XslResult.build(400,"推送失败");
+            return XslResult.build(403,"推送失败");
         }catch (Exception e){
             logger.error(e.getMessage());
-            return XslResult.build(500,"服务器异常");
+            throw new RuntimeException("服务器异常");
         }
     }
 

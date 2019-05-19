@@ -39,9 +39,8 @@ public interface XslTagMapper {
 
     int updateUseNumByExample(XslTagExample example);
 
-    /**
-     *
-     * @return
-     */
     List<TagVo> getTagList();
+
+    String getTagNameByTagId(String tagId);
+
 }

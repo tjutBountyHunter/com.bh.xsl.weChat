@@ -1,5 +1,7 @@
 package com.xsl.wechat.dto;
 
+import java.util.List;
+
 /**
  * @author 梁俊伟
  * @version 1.0
@@ -13,7 +15,7 @@ public class XslTaskDetailDTO {
 
     private String money;
 
-    private String issueImg;
+    private List<String> issueImg;
 
     private String issueTime;
 
@@ -59,11 +61,11 @@ public class XslTaskDetailDTO {
         this.money = money;
     }
 
-    public String getIssueImg() {
+    public List<String> getIssueImg() {
         return issueImg;
     }
 
-    public void setIssueImg(String issueImg) {
+    public void setIssueImg(List<String> issueImg) {
         this.issueImg = issueImg;
     }
 
