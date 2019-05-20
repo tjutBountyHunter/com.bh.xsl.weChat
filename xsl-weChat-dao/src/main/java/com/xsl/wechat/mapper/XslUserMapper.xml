@@ -218,6 +218,12 @@
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+  <select id="getHunterBySourceType" resultType="java.lang.String">
+    select hunterId from xsl_user where sourceType = 'weChat'
+  </select>
+  <select id="getUserId" resultType="java.lang.String">
+    select userId from xsl_user where hunterId = #{hunterId}
+  </select>
   <update id="updateByExampleSelective" parameterType="map" >
     update xsl_user
     <set >

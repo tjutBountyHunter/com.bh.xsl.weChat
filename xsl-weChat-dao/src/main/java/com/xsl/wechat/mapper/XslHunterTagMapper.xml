@@ -9,8 +9,9 @@
     <select id="getHunterByTagIds" resultType="java.lang.String" parameterType="java.util.List">
         select hunterId from xsl_hunter_tag
         where tagId in
-        <foreach collection="tagIds" index="tagId" item="" open="(" separator="," close=")" >
-          #{tagId}
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+          #{item}
         </foreach>
     </select>
+
 </mapper>

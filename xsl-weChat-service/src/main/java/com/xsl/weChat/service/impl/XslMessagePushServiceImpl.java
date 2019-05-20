@@ -1,6 +1,7 @@
 package com.xsl.weChat.service.impl;
 
 import com.xsl.weChat.common.pojo.XslResult;
+import com.xsl.weChat.service.HunterRecommend;
 import com.xsl.weChat.service.XslMessagePushService;
 import com.xsl.wechat.pojo.WxConfig;
 import com.xsl.wechat.vo.AccessToken;
@@ -8,6 +9,7 @@ import net.sf.json.JSONException;
 import net.sf.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.xsl.weChat.common.util.CommonUtil.httpsRequest;
@@ -20,13 +22,18 @@ import static com.xsl.weChat.common.util.CommonUtil.httpsRequest;
 @Service
 public class XslMessagePushServiceImpl implements XslMessagePushService {
 
+    @Autowired
+    private HunterRecommend hunterRecommend;
+
     private static final Logger logger = LoggerFactory.getLogger(XslMessagePushServiceImpl.class);
 
     @Override
     public XslResult pushMessageToHunter(String template,String taskId) {
         try {
-            //TODO 筛选猎人
-            XslResult xslResult = pushMessage(template);
+            XslResult result = hunterRecommend.matchingHunter(taskId);
+            String hunter = (String)result.getData();
+            String newTemplate = template.replace("openid",hunter);
+            XslResult xslResult = pushMessage(newTemplate);
             if(xslResult.isOK()){
                 return xslResult;
             }

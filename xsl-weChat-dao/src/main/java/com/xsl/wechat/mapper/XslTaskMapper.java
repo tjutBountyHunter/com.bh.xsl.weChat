@@ -115,4 +115,11 @@ public interface XslTaskMapper {
      * @param map
      */
     void alterTaskState(Map map);
+
+    /**
+     * 通过任务Id来查询雇主Id
+     * @param taskId
+     * @return
+     */
+    XslTask getTaskByTaskId(String taskId);
 }

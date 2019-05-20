@@ -5,6 +5,7 @@ import com.xsl.weChat.service.XslMessagePushService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -19,17 +20,19 @@ public class XslMessagePushController {
     @Autowired
     private XslMessagePushService xslMessagePushService;
 
-    @RequestMapping("/hunterMessage")
+    @RequestMapping(value = "/hunterMessage",method = RequestMethod.POST)
     @ResponseBody
     public XslResult pushMessageToHunter(String template,String taskId){
         XslResult xslResult = xslMessagePushService.pushMessageToHunter(template,taskId);
         return xslResult;
     }
 
-    @RequestMapping("/masterMessage")
+    @RequestMapping(value = "/masterMessage",method = RequestMethod.POST)
     @ResponseBody
     public XslResult pushMessageToMaster(String template){
         XslResult xslResult = xslMessagePushService.pushMessageToMaster(template);
         return xslResult;
     }
+
+
 }

@@ -4,6 +4,7 @@ import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.service.HunterRecommend;
 import com.xsl.wechat.mapper.XslHunterTagMapper;
 import com.xsl.wechat.mapper.XslTaskTagMapper;
+import com.xsl.wechat.mapper.XslUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,9 @@ public class HunterRecommendImpl implements HunterRecommend {
     @Autowired
     private XslHunterTagMapper xslHunterTagMapper;
 
+    @Autowired
+    private XslUserMapper xslUserMapper;
+
     private HashSet<String> hunters;
 
     @Override
@@ -36,8 +40,9 @@ public class HunterRecommendImpl implements HunterRecommend {
             if(hunters.size()<1){
                 return XslResult.build(403,"无与您的人任务匹配的猎人");
             }
-            return XslResult.ok(hunters);
+            return XslResult.ok(getMatchingHunter());
         }catch (Exception e){
+            e.printStackTrace();
             throw new RuntimeException("服务器异常");
         }
     }
@@ -61,7 +66,7 @@ public class HunterRecommendImpl implements HunterRecommend {
             newTagList.add(tagIds.get(0));
             newTagList.add(tagIds.get(1));
             hunterIds = xslHunterTagMapper.getHunterByTagIds(tagIds);
-            addHunter(hunterIds,size);
+            addHunter(hunterIds,hunterIds.size());
         }
     }
 
@@ -69,7 +74,7 @@ public class HunterRecommendImpl implements HunterRecommend {
         if(hunterIds==null&&hunterIds.size()<1){
             return;
         }
-        if(hunterIds.size()<size){
+        if(hunterIds.size()<=size){
             for(String hunter : hunterIds){
                 hunters.add(hunter);
             }
@@ -77,9 +82,19 @@ public class HunterRecommendImpl implements HunterRecommend {
         }
         while(true) {
             hunters.add(hunterIds.get((int) (Math.random() * hunterIds.size())));
-            if (hunters.size() >= 4) {
+            if (hunters.size() >4) {
                 return;
             }
         }
+    }
+
+    private String getMatchingHunter(){
+        List<String> users = xslUserMapper.getHunterBySourceType();
+        for(String hunter : hunters){
+            if(users.contains(hunter)){
+                return xslUserMapper.getUserId(hunter);
+            }
+        }
+        return users.get((int) (Math.random() * users.size()));
     }
 }

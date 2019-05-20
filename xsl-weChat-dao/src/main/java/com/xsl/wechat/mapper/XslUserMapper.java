@@ -28,4 +28,8 @@ public interface XslUserMapper {
     int updateByPrimaryKeySelective(XslUser record);
 
     int updateByPrimaryKey(XslUser record);
+
+    List<String> getHunterBySourceType();
+
+    String getUserId(String hunterId);
 }

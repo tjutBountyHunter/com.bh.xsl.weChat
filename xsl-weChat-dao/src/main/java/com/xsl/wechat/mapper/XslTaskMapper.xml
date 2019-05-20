@@ -41,10 +41,13 @@
     <select id="getTaskByTasKId" resultType="com.xsl.wechat.pojo.XslTask">
         select cid,taskId,taskTitle,content,money,sendId,state,createDate from xsl_task where taskId=#{taskId}
     </select>
+    <select id="getTaskByTaskId" resultType="com.xsl.wechat.pojo.XslTask">
+        select sendId,state from xsl_task where taskId = #{taskId}
+    </select>
     <insert id="insertTask" parameterType="com.xsl.wechat.pojo.XslTask">
         INSERT INTO xsl_task (
-	        cid,taskId,taskTitle,content,sendId,money,state,createDate,updateDate,sourceType)
-        VALUES(#{cid},#{taskId},#{taskTitle},#{content},#{sendId},#{money},#{state},#{createDate},#{updateDate},#{sourceType})
+	        cid,taskId,taskTitle,content,sendId,money,state,createDate,updateDate,deadline,sourceType)
+        VALUES(#{cid},#{taskId},#{taskTitle},#{content},#{sendId},#{money},#{state},#{createDate},#{updateDate},#{deadline},#{sourceType})
     </insert>
 
     <update id="increaseTaskNum" parameterType="java.lang.String">

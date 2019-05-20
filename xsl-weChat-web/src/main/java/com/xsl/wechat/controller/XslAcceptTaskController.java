@@ -21,7 +21,7 @@ public class XslAcceptTaskController {
     @ResponseBody
     public XslResult  acceptTask(@RequestParam(value = "userid")String userId,@RequestParam(value = "id")String taskId){
         try {
-            if(userId.equals("")||taskId.equals("")||userId==null||taskId==null){
+            if("".equals(userId)||"".equals(taskId)||userId==null||taskId==null){
                 return XslResult.build(-1,"输入不正确");
             }
             return xslAcceptTaskService.AcceptTask(userId,taskId);
@@ -31,7 +31,6 @@ public class XslAcceptTaskController {
             System.out.println(e);
         }
         return XslResult.build(-1,"服务器异常");
-
 
     }
 

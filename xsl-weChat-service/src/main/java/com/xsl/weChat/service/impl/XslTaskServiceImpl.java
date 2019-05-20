@@ -332,6 +332,9 @@ public class XslTaskServiceImpl implements XslTaskService {
         xslTask.setMoney(new BigDecimal(xslTaskReqVo.getMoney()));
         xslTask.setCreateDate(DateUtil.stringToDate(xslTaskReqVo.getIssueTime()));
         xslTask.setUpdateDate(new Date());
+        Date deadline = DateUtil.stringToDate(xslTaskReqVo.getIssueTime());
+        deadline.setTime(deadline.getTime() + 48*60*60*1000);
+        xslTask.setDeadline(deadline);
         xslTask.setSourceType(xslTaskReqVo.getSourceType());
         xslTask.setContent(xslTaskReqVo.getMissionDetail());
         try {
