@@ -8,4 +8,7 @@
         insert into xsl_task_file values
         (default ,#{taskId},#{fileId},#{type},#{createDate},#{updateDate})
     </insert>
+    <select id="selectTaskImage" resultType="java.lang.String">
+        select fileId from xsl_task_file where taskId = #{taskId} and type = #{type}
+    </select>
 </mapper>

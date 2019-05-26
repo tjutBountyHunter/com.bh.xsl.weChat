@@ -1,11 +1,12 @@
 package com.xsl.wechat.controller;
 
+import com.xsl.user.vo.ResBaseVo;
 import com.xsl.weChat.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vo.ResBaseVo;
+
 
 /**
  * @author 梁俊伟

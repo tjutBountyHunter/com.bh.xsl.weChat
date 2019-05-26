@@ -1,5 +1,7 @@
 package com.xsl.weChat.service.impl;
 
+import com.xsl.user.vo.SchoolReqVo;
+import com.xsl.user.vo.SchoolResVo;
 import com.xsl.weChat.common.pojo.XslResult;
 import com.xsl.weChat.common.util.JedisClientUtil;
 import com.xsl.weChat.common.util.JsonUtils;
@@ -12,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import vo.SchoolReqVo;
-import vo.SchoolResVo;
 
 import java.util.List;
 

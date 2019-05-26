@@ -26,12 +26,13 @@
         <!-- 连接耗尽时是否阻塞, false报异常,ture阻塞直到超时, 默认true -->
         <property name="blockWhenExhausted" value="false" />
     </bean>
-    <!-- jedis客户端单机版 -->
-    <bean id="redisClient" class="redis.clients.jedis.JedisPool">
+    <!--redis单机版-->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
         <constructor-arg name="host" value="39.108.211.37"></constructor-arg>
         <constructor-arg name="port" value="8379"></constructor-arg>
         <constructor-arg name="poolConfig" ref="jedisPoolConfig"></constructor-arg>
     </bean>
+    <bean id="jedisClientUtil" class="com.xsl.weChat.common.util.JedisClientUtil"></bean>
 
     <!--读取jedisClient的实现类-->
     <!--<bean id="jedisClient" class="com.xsl.weChat.redis.Impl.JedisClientSingle"/>-->

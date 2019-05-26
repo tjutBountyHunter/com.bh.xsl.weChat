@@ -1,14 +1,14 @@
 package com.xsl.weChat.service.impl;
 
 import com.xsl.user.SupplementUserInfoResource;
+import com.xsl.user.vo.ResBaseVo;
+import com.xsl.user.vo.UserAccReqVo;
 import com.xsl.weChat.common.util.JsonUtils;
 import com.xsl.weChat.service.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import vo.ResBaseVo;
-import vo.UserAccReqVo;
 
 import javax.annotation.Resource;
 
@@ -31,7 +31,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         try {
             UserAccReqVo userAccReqVo = JsonUtils.jsonToPojo(personalMessage, UserAccReqVo.class);
             if (StringUtils.isEmpty(personalMessage)){
-                return ResBaseVo.build(-1,"数据不能为空");
+                return com.xsl.user.vo.ResBaseVo.build(-1,"数据不能为空");
             }
             userAccReqVo.setPhone(userAccReqVo.getPhone());
             userAccReqVo.setSource("weChat");

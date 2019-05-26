@@ -1,6 +1,6 @@
 package com.xsl.weChat.service;
 
-import vo.ResBaseVo;
+import com.xsl.user.vo.ResBaseVo;
 
 /**
  * @author 梁俊伟
